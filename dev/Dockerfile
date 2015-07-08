@@ -5,4 +5,4 @@ MAINTAINER Helder Correia <me@heldercorreia.com>
 RUN sed -i "/sendfile/d" /etc/nginx/nginx.conf \
  && sed -i "/server_tokens/d" /etc/nginx/nginx.conf
 
-ONBUILD COPY default.conf /etc/nginx/conf.d/default.conf
+ONBUILD COPY default.conf /etc/nginx/sites-available/default
