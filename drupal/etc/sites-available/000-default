@@ -1,0 +1,14 @@
+# -*-mode: nginx; mode: flyspell-prog;  ispell-local-dictionary: "american" -*-
+### Block all illegal host headers. Taken from a discussion on nginx
+### forums. Cf. http://forum.nginx.org/read.php?2,3482,3518 following
+### a suggestion by Maxim Dounin. Also suggested in
+### http://nginx.org/en/docs/http/request_processing.html#how_to_prevent_undefined_server_names.
+server {
+    listen 80 default_server; # IPv4
+    ## Socket options can only be specified once, hence the different
+    ## address for the 'default' server.
+    listen [fe80::202:b3ff:fe1e:8328]:80 default_server ipv6only=on; # IPv6
+
+    server_name _;
+    return 444;
+}

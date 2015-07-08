@@ -1,1 +1,1 @@
-FROM helder/nginx:dev
+FROM helder/nginx-dev

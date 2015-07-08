@@ -1,1 +1,0 @@
-FROM helder/nginx:dev
