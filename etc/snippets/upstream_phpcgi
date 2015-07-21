@@ -1,0 +1,6 @@
+# -*- mode: nginx; mode: flyspell-prog;  ispell-local-dictionary: "american" -*-
+
+## Add as many servers as needed. Cf. http://wiki.nginx.org/HttpUpstreamModule.
+upstream phpcgi {
+    server php:9000;
+}

@@ -1,0 +1,41 @@
+# -*- mode: nginx; mode: flyspell-prog;  ispell-current-dictionary: american -*-
+
+{%- block server %}
+{%- endblock %}
+
+server {
+    {% block listen -%}
+    listen 80;
+    listen [::]:80 ipv6only=on;
+    server_name {{ server_name|default('_') }};
+    limit_conn arbeit 32;
+    {% endblock -%}
+
+    {%- if access_log %}access_log {{ access_log }};{% endif -%}
+
+    {% block root %}
+    root {{ root|default('/usr/src/app') }}/{{ public }};
+    {%- endblock %}
+    {% block index %}
+    index index.html index.htm;
+    {%- endblock %}
+
+    {% block head -%}
+    include snippets/deny_access;
+    {%- endblock head %}
+
+    {% block body -%}
+    {%- endblock body %}
+
+    {% block tail -%}
+    # Monitoring.
+    # http://wiki.nginx.org/HttpStubStatusModule.
+    include snippets/nginx_status_vhost;
+    {%- endblock tail %}
+}
+
+{% block upstream -%}
+upstream server {
+    server {{ upstream|default('unix:/var/run/' ~ app ~ '.sock') }};
+}
+{%- endblock %}

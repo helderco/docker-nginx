@@ -1,0 +1,26 @@
+{% extends "vhost/default" %}
+
+{% block index -%}
+index index.php index.htm index.html;
+{%- endblock index %}
+
+{% block body -%}
+    fastcgi_keep_conn on; # keep alive to the FCGI upstream
+
+    {% if allow_php_script -%}
+    location = /{{ allow_php_script }} {
+        fastcgi_pass server;
+    }
+    {%- endif %}
+
+    {% block body_php -%}
+    location ~* ^.+\.php$ {
+        fastcgi_pass server;
+    }
+    {%- endblock body_php %}
+{%- endblock body %}
+
+{% block tail %}
+    {{ super() }}
+    include snippets/php_fpm_status_vhost;
+{% endblock tail %}

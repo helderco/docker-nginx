@@ -1,0 +1,39 @@
+{% extends "vhost/php" %}
+
+{% block body_php -%}
+    location / {
+        # deny running scripts inside writable directories
+        location ~* /(images|cache|media|logs|tmp)/.*\.(php|pl|py|jsp|asp|sh|cgi)$ {
+            return 403;
+            error_page 403 /403_error.html;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass server;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+        # caching of files
+        location ~* \.(ico|pdf|flv)$ {
+            expires 1y;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$ {
+            expires 14d;
+        }
+
+        # Deny .htaccess file access
+        location ~ /\.ht {
+            deny all;
+        }
+
+        # Deny .git access
+        location ~ /\.git {
+            deny all;
+        }
+
+        try_files $uri $uri/ /index.php?$args;
+    }
+{%- endblock %}

@@ -1,0 +1,22 @@
+{% extends "vhost/default" %}
+
+{% block body -%}
+    charset utf-8;
+
+    # Send all non-media requests to the Django server.
+    location @django {
+        uwsgi_pass server;
+        include uwsgi_params;
+    }
+
+    location / {
+        # We definitely want python to handle the root URL.
+        location = / {
+            error_page 590 = @django;
+            return 590;
+        }
+
+        # try serving static file first, then try django
+        try_files $uri $uri/ @django;
+    }
+{%- endblock %}

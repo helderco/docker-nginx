@@ -1,0 +1,17 @@
+{% extends "vhost/default" %}
+
+{% block root %}{% endblock %}
+
+{% block body -%}
+    charset utf-8;
+
+    location ^~ /static/  {
+        allow all;
+        root {{ root|default('/usr/src/app') }}/{{ public }};
+    }
+
+    location / {
+        uwsgi_pass server;
+        include uwsgi_params;
+    }
+{%- endblock %}

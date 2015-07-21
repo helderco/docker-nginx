@@ -1,0 +1,21 @@
+{% extends "vhost/php" %}
+
+{% set public = public|default('web') %}
+
+{% block body_php -%}
+    rewrite ^/admin.php/ /admin.php;
+
+    location ~ ^/(index|frontend|frontend_dev|backend|backend_dev|admin)\.php$ {
+        include fastcgi_params;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        # fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_path_info;
+        fastcgi_param HTTPS off;
+        fastcgi_pass server;
+    }
+
+    location / {
+        index index.php;
+        try_files $uri /index.php?$args;
+    }
+{%- endblock %}

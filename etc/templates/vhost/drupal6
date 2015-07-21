@@ -1,0 +1,28 @@
+{% extends "vhost/drupal" %}
+
+{% block server -%}
+{{ super() }}
+include apps/drupal/drupal6_uri.conf;
+{%- endblock %}
+
+{% block drupal_target %}/index.php?q=$no_slash_uri&$args{% endblock %}
+{% block drupal_target_no_args %}/index.php?q=$no_slash_uri{% endblock %}
+
+{% block drupal_location -%}
+    location = /index.php {
+        ## This is marked internal
+        ## http://wiki.nginx.org/HttpCoreModule#internal as pro-active
+        ## security practice. No direct access to index.php is allowed all
+        ## accesses are made by Nginx from other locations or internal
+        ## redirect.
+        internal;
+
+        include apps/drupal/fastcgi_drupal.conf;
+        fastcgi_pass server;
+
+        ## Filefield Upload progress
+        ## http://drupal.org/project/filefield_nginx_progress support
+        ## through the NginxUploadProgress modules.
+        track_uploads uploads 60s;
+    }
+{% endblock %}

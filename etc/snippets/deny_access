@@ -1,0 +1,15 @@
+## See the blacklist.conf file
+## Deny access based on the User-Agent header.
+if ($bad_bot) {
+    return 444;
+}
+## Deny access based on the Referer header.
+if ($bad_referer) {
+    return 444;
+}
+
+## Protection against illegal HTTP methods. Out of the box only HEAD,
+## GET and POST are allowed.
+if ($not_allowed_method) {
+    return 405;
+}
