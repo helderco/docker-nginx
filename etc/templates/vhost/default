@@ -36,6 +36,6 @@ server {
 
 {% block upstream -%}
 upstream server {
-    server {{ upstream|default('unix:/var/run/' ~ app ~ '.sock') }};
+    server {{ upstream|default('unix:/var/run/' ~ socket ~ '.sock') }};
 }
 {%- endblock %}
