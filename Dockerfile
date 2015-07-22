@@ -15,4 +15,4 @@ RUN rm -rf /etc/nginx && \
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"],
+CMD ["nginx", "-g", "daemon off;"]
