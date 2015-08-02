@@ -31,6 +31,14 @@ if [ -z $CONF_UPSTREAM ] && [ ! -f /var/run/${CONF_SOCKET}.sock ]; then
   done
 fi
 
+# Default subdirs for root
+if [ -z $CONF_PUBLIC ]; then
+  case "$CONF_APP" in
+    django) CONF_PUBLIC=public ;;
+    symfony1) CONF_PUBLIC=web ;;
+  esac
+fi
+
 # Default root to nginx welcome message
 if [ -z $CONF_ROOT ] && [ ! -d /usr/src/app ]; then
   CONF_ROOT=/usr/share/nginx/html

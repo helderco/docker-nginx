@@ -119,12 +119,13 @@ Variables found in a template, are also available for every template that extend
 
 * **`CONF_PUBLIC`**
 
-    *Default: empty or `web` if `CONF_APP=symfony1`*
+    *Default: empty or...*
+
+    * *`public` if `CONF_APP=django`*
+    * *`web` if `CONF_APP=symfony1`*
 
     Value to append to `CONF_ROOT` for the nginx's `root` directive. No leading slash, see
     `CONF_ROOT` description. Useful in a project with a subfolder as public facing (e.g. symfony).
-
-    Attention: for `symfony1` app,
 
     **Example:** `CONF_PUBLIC=web`
 
