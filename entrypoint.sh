@@ -12,25 +12,6 @@ fi
 : ${CONF_PROJECT:=$CONF_APP}
 : ${CONF_SOCKET:=$CONF_PROJECT}
 
-# Find app name based on link alias convention (i.e: <app_name>_app)
-if [ "$CONF_APP" = "default" ]; then
-  app=$(env | grep -e '_APP_NAME=' | head -n1 | sed -E 's/^(.*)_APP_NAME=.*$/\1/')
-  link_alias="${app}_APP"
-  [ ! -z "$app" ] && CONF_APP=${app,,}
-fi
-
-# If not socket found, try standard ports for a default tcp upstream
-if [ -z $CONF_UPSTREAM ] && [ ! -f /var/run/${CONF_SOCKET}.sock ]; then
-  ports=( 9000 )
-  for port in "${ports[@]}"; do
-    test_port="${CONF_APP^^}_APP_PORT_${port}_TCP_PORT"
-    if [ ! -z ${!test_port} ]; then
-      CONF_UPSTREAM="${CONF_APP}_app:$port"
-      break
-    fi
-  done
-fi
-
 # Default subdirs for root
 if [ -z $CONF_PUBLIC ]; then
   case "$CONF_APP" in

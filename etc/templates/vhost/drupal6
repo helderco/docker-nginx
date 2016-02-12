@@ -10,13 +10,6 @@ include apps/drupal/drupal6_uri.conf;
 
 {% block drupal_location -%}
     location = /index.php {
-        ## This is marked internal
-        ## http://wiki.nginx.org/HttpCoreModule#internal as pro-active
-        ## security practice. No direct access to index.php is allowed all
-        ## accesses are made by Nginx from other locations or internal
-        ## redirect.
-        internal;
-
         include apps/drupal/fastcgi_drupal.conf;
         fastcgi_pass server;
 

@@ -30,17 +30,18 @@ If you want your files in a different path:
 Run a drupal website:
 
     docker run -d -v "$PWD:/usr/src/app" helder/php php
-    docker run -d --volumes-from php --link php:drupal_app -p 80:80 helder/nginx web_drupal
+    docker run -d --volumes-from php --link php -e CONF_APP=drupal -e CONF_UPSTREAM=php:9000 -p 80:80 helder/nginx web_drupal
 
 ### How to chose an app
 
-Anything listed in the `templates/vhost` folder of nginx is an app (you can add your own). To define which you want, you can set the environment variable `CONF_APP`, or choose your link alias appropriately.
-
-A linked container with the alias `apptype_app` will set `CONF_APP=apptype` automatically. See drupal example above.
+Anything listed in the `templates/vhost` folder of nginx is an app (you can add your own).
+To define which you want, set the environment variable `CONF_APP`.
 
 ## Bypass template system
 
-When an app is chosen, the rendered template will be written to `/etc/nginx/sites-enabled/default.conf`. If the file exists, nothing is done so if you don't want to use the template system, you can bypass it completely by adding your own file.
+When an app is chosen, the rendered template will be written to `/etc/nginx/sites-enabled/default.conf`.
+If the file exists, nothing is done so if you don't want to use the template system,
+you can bypass it completely by adding your own file.
 
     FROM helder/nginx
     COPY mysite.conf /etc/nginx/sites-enabled/default.conf
@@ -65,7 +66,8 @@ All of these are valid values for `CONF_APP`.
 
 ### Configurable with environment variables
 
-Any environment variable starting with `CONF_` will be provided to the template, without the prefix and lowercase.
+Any environment variable starting with `CONF_` will be provided to the template, without
+the prefix and lowercase.
 
 E.g., `CONF_MY_SETTING` would be `my_setting` in the template.
 
@@ -78,7 +80,6 @@ Variables found in a template, are also available for every template that extend
     *Default: `default`*
 
     Type of app. See list of files in `/etc/nginx/templats/vhost/` for possible values.
-    Can be set automatically if you have a linked container with alias ending in `_app`.
 
     **Example:** `CONF_APP=drupal`
 
@@ -102,11 +103,10 @@ Variables found in a template, are also available for every template that extend
 
     *Default: `unix:/var/run/${CONF_SOCKET}.sock`*
 
-    The upstream socket is supposed to be shared from a volume (e.g. php), but if the file is not
-    found, an attempt will be made to find a linked container with an exposed standard port that
-    nginx can use (e.g. 9000 for php). If not any of that, then this variable must be set.
+    The upstream socket is shared from a volume (e.g. php) by default. If that's not
+    the case, override this setting.
 
-    **Example:** `CONF_UPSTREAM=link_alias:9001`
+    **Example:** `CONF_UPSTREAM=php:9000`
 
 * **`CONF_ROOT`**
 
@@ -157,32 +157,35 @@ Build a new image with your own jinja template.
 
 Drupal 8 project with public facing folder in `web`:
 
-    web:
-      image: helder/nginx
-      ports:
-        - 80
-      links:
-        - "php:drupal_app"
-      volumes_from:
-        - php
-      environment:
-        - CONF_PUBLIC=web
+    version: '2'
 
-    php:
-      image: helder/php:5.6
-      links:
-        - db
-        - mail
-      volumes:
-        - .:/usr/src/app
-      working_dir: /usr/src/app
+    services:
+      web:
+        image: helder/nginx
+        ports:
+          - 80
+        volumes_from:
+          - php
+        environment:
+          - CONF_APP=drupal
+          - CONF_PUBLIC=web
+          - CONF_UPSTREAM=php:9000
 
-    db:
-      image: mysql:5.5
-      ports:
-        - 3306
+      php:
+        image: helder/php:5.6
+        links:
+          - db
+          - mail
+        volumes:
+          - ./:/usr/src/app
+        working_dir: /usr/src/app
 
-    mail:
-      image: helder/mailcatcher
-      ports:
-        - 80
+      db:
+        image: mysql:5.5
+        ports:
+          - 3306
+
+      mail:
+        image: helder/mailcatcher
+        ports:
+          - 80
