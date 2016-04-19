@@ -115,8 +115,8 @@ include apps/drupal/map_cache.conf;
             }
         }
 
-        ## XML Sitemap support.
-        location ~* ^/[^\/]+/sitemap.xml$ {
+        ## XML support.
+        location ~* ^.+\.xml$ {
             try_files $uri {{ self.drupal_target() }};
         }
 
