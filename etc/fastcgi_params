@@ -25,3 +25,5 @@ fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 fastcgi_param REDIRECT_STATUS 200;
 ## HTTPS 'on' parameter.
 fastcgi_param HTTPS $https if_not_empty;
+## Fix HTTPoxy vulnerability https://httpoxy.org/#mitigate-nginx.
+fastcgi_param HTTP_PROXY '';
