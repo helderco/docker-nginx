@@ -25,7 +25,7 @@ server {
     {%- endblock head %}
 
     # Allow "Well-Known URIs" as per RFC 5785.
-    # Necessary for Let’s Encrypt validation server.
+    # Necessary for Let's Encrypt validation server.
     location ~* ^/.well-known/ {
         allow all;
     }

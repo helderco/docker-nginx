@@ -35,11 +35,11 @@ done
 vars=$(IFS=, ; echo "${vars[*]}")
 
 # Use jinja to create our default.conf vhost based on context
-python2 > $DEFAULT_VHOST <<- SCRIPT
+python3 > $DEFAULT_VHOST <<- SCRIPT
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('/etc/nginx/templates'))
 template = env.get_template('vhost/${CONF_APP}')
-print template.render($vars)
+print(template.render($vars))
 SCRIPT
 
 exec "$@"
