@@ -1,0 +1,5 @@
+server {
+    listen 80;
+    root {{ root|default('/var/www') }};
+    index index.html index.htm;
+}
