@@ -1,5 +1,6 @@
 server {
     listen 80;
+    server_name {{ server_name|default('_') }};
     root {{ root|default('/var/www') }};
     index index.html index.htm;
 }
