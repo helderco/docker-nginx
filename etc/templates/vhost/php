@@ -6,6 +6,7 @@ index index.php index.htm index.html;
 
 {% block body -%}
     fastcgi_keep_conn on; # keep alive to the FCGI upstream
+    fastcgi_buffer_size 16k;
 
     {% if allow_php_script -%}
     location = /{{ allow_php_script }} {
