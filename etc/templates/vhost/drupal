@@ -28,7 +28,7 @@ include apps/drupal/map_cache.conf;
 
         ## Using a nested location is the 'correct' way to use regexes.
         # use location {% block drupal_target %}@drupal{% endblock %}
-        # and {% block drupal_target_no_args %}@drupal-no-args{% endblock %}
+        # and {% block drupal_target_no_args %}@drupal{% endblock %}
 
         ## Regular private file serving (i.e. handled by Drupal).
         location ^~ /system/files/ {

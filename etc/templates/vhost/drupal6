@@ -10,7 +10,7 @@ include apps/drupal/drupal6_uri.conf;
 
 {% block drupal_location -%}
     location = /index.php {
-        include apps/drupal/fastcgi_drupal.conf;
+        include apps/drupal/fastcgi_drupal6.conf;
         fastcgi_pass server;
 
         ## Filefield Upload progress
