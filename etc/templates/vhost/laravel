@@ -1,0 +1,19 @@
+{% extends "vhost/php" %}
+
+{% set public = public|default('public') %}
+
+{% block body_php -%}
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass server;
+        include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+{%- endblock %}
