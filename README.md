@@ -1,4 +1,4 @@
-# Nginx
+# Nginx (DEPRECATED)
 
 This is a **very flexible** nginx image, with support for several types of applications. It's heavy, because it's based on [helder/nginx-extras](https://registry.hub.docker.com/u/helder/nginx-extras/), but it's full featured, and thanks to docker, you only need it once.
 
